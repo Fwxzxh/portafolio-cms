@@ -4,10 +4,10 @@
 	import Button from '$components/Button.svelte';
 	import { goto } from '$app/navigation';
 	import ExperienceTable from '$components/ExperienceTable.svelte';
-	import type { DevExperience } from '$lib/types/sanity';
+	import type { SanityDevExperience } from '$lib/types/sanity';
 
 	interface AboutMeProps {
-		workExperience: DevExperience[];
+		workExperience: SanityDevExperience[];
 	}
 
 	let { workExperience } = $props();

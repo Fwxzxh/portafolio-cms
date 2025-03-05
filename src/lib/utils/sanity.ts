@@ -37,7 +37,14 @@ export function processProjectEntries(rawProject: SanityProject) {
 	return processedProject;
 }
 
-function processProjectContent(content: RawTextContent | RawImageContent) {
+/**
+ * Function to process the content of the sanity content tag
+ * @param {RawTextContent | RawImageContent} content - The content from sanity
+ * @returns {ProcessedTextContent | ProcessedImageContent} the content cleaned up and processed with the fields that are needed
+ */
+function processProjectContent(
+	content: RawTextContent | RawImageContent
+): ProcessedTextContent | ProcessedImageContent {
 	if (content._type == 'block') {
 		const processedTextContent: ProcessedTextContent = {
 			type: 'text',

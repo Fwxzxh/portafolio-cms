@@ -11,9 +11,8 @@ export const load: PageLoad = async () => {
 
 	const projects = rawProjects.map(processProjectEntries);
 
-	console.log(projects[0]);
-
 	return {
-		workExperience
+		workExperience,
+		projects
 	};
 };
