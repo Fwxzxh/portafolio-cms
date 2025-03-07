@@ -87,3 +87,13 @@ interface ProcessedImageContent {
 	type: 'image';
 	url: string;
 }
+
+export type Skills = {
+	skillList?: Array<Skill>;
+};
+
+interface Skill {
+	name: string;
+	iconClass: string;
+	_key: string;
+}

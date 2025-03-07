@@ -19,6 +19,7 @@
 			<a href={`/work/${mainProject.slug}`}>
 				<img src={mainProject.projectImageUrl} alt={mainProject.name} />
 			</a>
+
 			<div class="project-info mt-s">
 				<div class="title-and-company">
 					<h3 class="semi-bold">
