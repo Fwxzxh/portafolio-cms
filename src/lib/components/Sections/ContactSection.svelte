@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '$components/Button.svelte';
+	import { fade } from 'svelte/transition';
 	import SectionHeadline from './SectionHeadline.svelte';
 
 	let contactName = $state('');
@@ -52,7 +53,7 @@
 	<SectionHeadline sectionName="contact-form">Let's talk</SectionHeadline>
 	<div class="form-container default-margin mt-m">
 		{#if isEmailSent}
-			<div class="spinner-container">
+			<div transition:fade={{ duration: 1000 }} class="spinner-container">
 				<h3>Thank you for getting in contact with me.</h3>
 			</div>
 		{:else if isLoading}
