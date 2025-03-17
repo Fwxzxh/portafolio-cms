@@ -14,8 +14,10 @@
 
 	async function onSubmit(event: Event) {
 		event.preventDefault();
+
 		if (contactMail && contactName && informationAboutProject) {
 			isLoading = true;
+
 			const response = await fetch('/api/send-mail', {
 				method: 'POST',
 
@@ -27,6 +29,7 @@
 
 				headers: { 'Content-Type': 'application/json' }
 			});
+
 			isLoading = false;
 
 			if (response.ok) {
@@ -34,8 +37,6 @@
 			} else {
 				showErrorMessage = true;
 			}
-
-			console.log(response);
 		} else {
 			isFormInvalid = true;
 		}
@@ -51,6 +52,7 @@
 
 <section class="mt-l">
 	<SectionHeadline sectionName="contact-form">Let's talk</SectionHeadline>
+
 	<div class="form-container default-margin mt-m">
 		{#if isEmailSent}
 			<div transition:fade={{ duration: 1000 }} class="spinner-container">
