@@ -2,24 +2,95 @@
 	import Button from '$components/Button.svelte';
 	import SectionHeadline from './SectionHeadline.svelte';
 
-	function onSubmit(event: Event) {
+	let contactName = $state('');
+	let contactMail = $state('');
+	let informationAboutProject = $state('');
+	let isFormInvalid = $state(false);
+	let showErrorMessage = $state(false);
+	let isLoading = $state(false);
+
+	let isEmailSent = $state(false);
+
+	async function onSubmit(event: Event) {
 		event.preventDefault();
-		console.log(event);
+		if (contactMail && contactName && informationAboutProject) {
+			isLoading = true;
+			const response = await fetch('/api/send-mail', {
+				method: 'POST',
+
+				body: JSON.stringify({
+					contactName,
+					contactMail,
+					informationAboutProject
+				}),
+
+				headers: { 'Content-Type': 'application/json' }
+			});
+			isLoading = false;
+
+			if (response.ok) {
+				isEmailSent = true;
+			} else {
+				showErrorMessage = true;
+			}
+
+			console.log(response);
+		} else {
+			isFormInvalid = true;
+		}
 	}
+
+	// Anytime any of the fields updates, update the isFormInvalid
+	$effect(() => {
+		if (contactName || contactMail || informationAboutProject) {
+			isFormInvalid = false;
+		}
+	});
 </script>
 
 <section class="mt-l">
 	<SectionHeadline sectionName="contact-form">Let's talk</SectionHeadline>
 	<div class="form-container default-margin mt-m">
-		<form action="">
-			<input type="text" class="text-input mb-m" placeholder="Your Name" />
+		{#if isEmailSent}
+			<div class="spinner-container">
+				<h3>Thank you for getting in contact with me.</h3>
+			</div>
+		{:else if isLoading}
+			<div class="spinner-container">
+				<div class="spinner"></div>
+				<h3>Sending Off email</h3>
+			</div>
+		{:else if showErrorMessage}
+			<h3>We seem to have trouble with our server at the moment. :c</h3>
+		{:else}
+			<form action="">
+				<input
+					type="text"
+					class="text-input mb-m"
+					class:input-error={isFormInvalid && !Boolean(contactName.length)}
+					placeholder="Your Name"
+					bind:value={contactName}
+				/>
 
-			<input type="text" class="text-input mb-m" placeholder="Your Email" />
+				<input
+					type="text"
+					class="text-input mb-m"
+					class:input-error={isFormInvalid && !Boolean(contactMail.length)}
+					placeholder="Your Email"
+					bind:value={contactMail}
+				/>
 
-			<textarea name="" id="" placeholder="Tell me what's up"></textarea>
+				<textarea
+					name=""
+					id=""
+					placeholder="Tell me what's up"
+					class:input-error={isFormInvalid && !Boolean(informationAboutProject.length)}
+					bind:value={informationAboutProject}
+				></textarea>
 
-			<Button onclick={onSubmit}>Submit</Button>
-		</form>
+				<Button onclick={onSubmit}>Submit</Button>
+			</form>
+		{/if}
 
 		<div class="form-text">
 			<h3 class="bold mb-s">Talk to me about your project</h3>
@@ -116,7 +187,7 @@
 		}
 	}
 
-	.spiner-container {
+	.spinner-container {
 		display: flex;
 	}
 </style>
